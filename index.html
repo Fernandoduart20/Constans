@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Constans | Loja Online</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- BARRA SUPERIOR DE AVISOS -->
+  <div class="top-bar">
+    <p>FRETE GRÁTIS PARA TODO O BRASIL NAS COMPRAS ACIMA DE R$ 199</p>
+  </div>
+
+  <!-- LOGO PRINCIPAL CENTRALIZADA -->
+  <div class="brand-header">
+    <img src="img/constans.png.jpeg" alt="Constans Loja Online" class="main-logo" onclick="controller.navegarPara('home')" style="cursor: pointer;">
+  </div>
+
+  <!-- HEADER / NAVEGAÇÃO ENTRE PÁGINAS -->
+  <header>
+    <button class="menu-toggle" id="menu-btn" onclick="controller.navegarPara('home')">☰ Início</button>
+
+    <nav class="nav-links">
+      <button onclick="controller.navegarPara('home')">Início</button>
+      <button onclick="controller.navegarPara('feminino')">Feminino</button>
+      <button onclick="controller.navegarPara('masculino')">Masculino</button>
+      <button onclick="controller.navegarPara('fitness')">Fitness</button>
+      <button onclick="controller.navegarPara('acessorios')">Acessórios</button>
+    </nav>
+
+    <div class="header-actions">
+      <!-- O botão de perfil/login é injetado dinamicamente pelo view.js -->
+
+      <!-- BUSCA -->
+      <div class="search-box">
+        <input type="text" placeholder="Buscar..." onkeyup="controller.buscarProduto(this.value)">
+      </div>
+
+      <!-- CARRINHO -->
+      <div class="cart-icon" onclick="controller.alternarCarrinho()" style="cursor: pointer;">
+        🛒 (<span id="cart-count">0</span>)
+      </div>
+    </div>
+  </header>
+
+  <!-- PÁGINA INICIAL (HOME) -->
+  <div id="page-home" class="page-content">
+    <section class="hero-banner">
+      <div class="hero-content">
+        <h2>NOVA COLEÇÃO</h2>
+        <p>Estilo para Ela & Ele</p>
+      </div>
+    </section>
+
+    <section class="categories-section">
+      <div class="categories-grid">
+        <div class="category-card" onclick="controller.navegarPara('feminino')">
+          <div class="category-img-wrapper">
+            <img src="img/cat-feminino.jpg" alt="Moda Feminina" onerror="this.src='https://via.placeholder.com/300x350/EAE3D9/8C6D58?text=Feminino'">
+          </div>
+          <h3>Moda Feminina</h3>
+        </div>
+
+        <div class="category-card" onclick="controller.navegarPara('masculino')">
+          <div class="category-img-wrapper">
+            <img src="img/cat-masculino.jpg" alt="Moda Masculina" onerror="this.src='https://via.placeholder.com/300x350/EAE3D9/8C6D58?text=Masculino'">
+          </div>
+          <h3>Moda Masculina</h3>
+        </div>
+
+        <div class="category-card" onclick="controller.navegarPara('fitness')">
+          <div class="category-img-wrapper">
+            <img src="img/cat-fitness.jpg" alt="Fitness" onerror="this.src='https://via.placeholder.com/300x350/EAE3D9/8C6D58?text=Fitness'">
+          </div>
+          <h3>Fitness</h3>
+        </div>
+
+        <div class="category-card" onclick="controller.navegarPara('acessorios')">
+          <div class="category-img-wrapper">
+            <img src="img/cat-acessorios.jpg" alt="Acessórios" onerror="this.src='https://via.placeholder.com/300x350/EAE3D9/8C6D58?text=Acess%C3%B3rios'">
+          </div>
+          <h3>Acessórios</h3>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL (PRODUTOS) -->
+  <main>
+    <div class="page-title-container">
+      <h2 id="page-title" class="section-title">Destaques da Loja</h2>
+    </div>
+
+    <div class="content-layout">
+      <section class="products-grid" id="products-container">
+        <!-- Produtos injetados via JS -->
+      </section>
+
+      <!-- CARRINHO LATERAL -->
+      <aside class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+          <h2>Seu Carrinho</h2>
+          <button class="btn-close" onclick="controller.alternarCarrinho()">×</button>
+        </div>
+        <div id="cart-items"></div>
+        <div class="cart-summary">
+          <div class="summary-line">
+            <span>Total:</span>
+            <span>R$ <span id="cart-total-value">0.00</span></span>
+          </div>
+        </div>
+        <button class="btn-checkout" onclick="controller.finalizarCompra()">Finalizar no WhatsApp</button>
+      </aside>
+    </div>
+  </main>
+
+  <!-- RODAPÉ -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="img/constans.png.jpeg" alt="Constans" class="footer-img-logo" onclick="controller.navegarPara('home')" style="cursor: pointer;">
+      </div>
+
+      <div class="footer-links">
+        <a href="#" onclick="controller.navegarPara('home')">QUEM SOMOS</a>
+        <a href="#" onclick="controller.navegarPara('home')">CONTATO</a>
+        <a href="#" onclick="controller.navegarPara('home')">ENTREGA E TROCA</a>
+        <a href="#" onclick="controller.navegarPara('home')">POLÍTICA DE PRIVACIDADE</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 CONSTANS - Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="js/model.js"></script>
+  <script src="js/view.js"></script>
+  <script src="js/controller.js"></script>
+</body>
+</html>
