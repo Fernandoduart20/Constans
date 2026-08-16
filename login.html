@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Constans | Minha Conta</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .auth-container { max-width: 420px; margin: 40px auto; padding: 25px; background: #FFF; border: 1px solid #EAE3D9; border-radius: 6px; }
+    .auth-container h2 { text-align: center; margin-bottom: 20px; font-family: 'Cormorant Garamond', serif; }
+    .auth-form { display: flex; flex-direction: column; gap: 12px; }
+    .auth-form input { padding: 10px; border: 1px solid #D8D0C5; border-radius: 4px; font-size: 0.9rem; }
+    .auth-form button { background: #1A1A1A; color: #FFF; border: none; padding: 12px; border-radius: 4px; font-weight: 600; cursor: pointer; }
+    .auth-form button:hover { background: #8C6D58; }
+    .toggle-link { text-align: center; margin-top: 15px; font-size: 0.85rem; cursor: pointer; color: #8C6D58; text-decoration: underline; }
+    .btn-back-store { text-decoration: none; color: #8C6D58; font-size: 0.85rem; font-weight: 500; display: inline-block; margin-bottom: 15px; }
+    .btn-back-store:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="brand-header">
+    <a href="index.html"><img src="img/constans.png.jpeg" alt="Constans" class="main-logo"></a>
+  </div>
+
+  <div class="auth-container">
+    <!-- BOTÃO PARA VOLTAR PARA A LOJA -->
+    <a href="index.html" class="btn-back-store">← Voltar para a loja</a>
+
+    <!-- FORMULÁRIO DE LOGIN -->
+    <div id="box-login">
+      <h2>Entrar na Conta</h2>
+      <form class="auth-form" onsubmit="fazerLogin(event)">
+        <input type="email" id="login-email" placeholder="E-mail" required>
+        <input type="password" id="login-senha" placeholder="Senha" required>
+        <button type="submit">Entrar</button>
+      </form>
+      <p class="toggle-link" onclick="alternarTelas()">Não tem conta? Cadastre-se</p>
+    </div>
+
+    <!-- FORMULÁRIO DE CADASTRO -->
+    <div id="box-cadastro" style="display: none;">
+      <h2>Cadastre-se</h2>
+      <form class="auth-form" onsubmit="cadastrarCliente(event)">
+        <input type="text" id="cad-nome" placeholder="Nome Completo" required>
+        <input type="email" id="cad-email" placeholder="E-mail" required>
+        <input type="tel" id="cad-telefone" placeholder="Telefone (opcional)">
+        <input type="password" id="cad-senha" placeholder="Senha" required>
+        <button type="submit">Criar Conta</button>
+      </form>
+      <p class="toggle-link" onclick="alternarTelas()">Já tem uma conta? Faça login</p>
+    </div>
+  </div>
+
+  <script src="js/model.js"></script>
+  <script>
+    function alternarTelas() {
+      const login = document.getElementById('box-login');
+      const cad = document.getElementById('box-cadastro');
+      login.style.display = login.style.display === 'none' ? 'block' : 'none';
+      cad.style.display = cad.style.display === 'none' ? 'block' : 'none';
+    }
+
+    async function cadastrarCliente(e) {
+      e.preventDefault();
+      const model = new Model();
+      const novo = {
+        nome: document.getElementById('cad-nome').value,
+        email: document.getElementById('cad-email').value,
+        telefone: document.getElementById('cad-telefone').value,
+        senha: document.getElementById('cad-senha').value
+      };
+
+      const res = await fetch(`${model.supabaseUrl}/rest/v1/clientes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': model.supabaseKey,
+          'Authorization': `Bearer ${model.supabaseKey}`
+        },
+        body: JSON.stringify(novo)
+      });
+
+      if (res.ok) {
+        alert("Cadastro realizado com sucesso! Faça seu login.");
+        alternarTelas();
+      } else {
+        alert("Erro ao cadastrar. Verifique se o e-mail já existe.");
+      }
+    }
+
+    async function fazerLogin(e) {
+      e.preventDefault();
+      const model = new Model();
+      const email = document.getElementById('login-email').value;
+      const senha = document.getElementById('login-senha').value;
+
+      const res = await fetch(`${model.supabaseUrl}/rest/v1/clientes?email=eq.${email}&senha=eq.${senha}`, {
+        headers: {
+          'apikey': model.supabaseKey,
+          'Authorization': `Bearer ${model.supabaseKey}`
+        }
+      });
+
+      const dados = await res.json();
+      if (dados.length > 0) {
+        localStorage.setItem('clienteConstans', JSON.stringify(dados[0]));
+        alert(`Bem-vindo(a), ${dados[0].nome}!`);
+        window.location.href = 'index.html';
+      } else {
+        alert("E-mail ou senha incorretos.");
+      }
+    }
+  </script>
+</body>
+</html>
